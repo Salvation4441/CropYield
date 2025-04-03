@@ -39,7 +39,7 @@ with st.form(key='crop'):
 if submit_button:
     # Validation logic
     if (year == 0 and average_rain_fall == 0.0 and avg_temp == 0.0 and not Area and not Item):
-        st.error("Please fill in all fields with valid inputs before submitting!")
+        st.error("Please fill in all fields with valid inputs before submitting!",icon="🚨")
     else:
         # Prepare the features
         features = np.array([year, average_rain_fall, pesticides_tonnes, avg_temp,Area,Item]).reshape(1, -1)
