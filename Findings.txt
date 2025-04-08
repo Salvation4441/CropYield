@@ -1,0 +1,78 @@
+Findings:
+ - Total number of countries: 101
+ - Country with most records: India
+ - Total number of crops: 10
+ - Crop with most records: Potatoes
+ - Total number of years: 23 (1990-2013)
+ - Year with most records: 2012
+ - Area of focus: India
+ - Crops distribution in India: 506 apiece (sub-dataset is balanced)
+ - Total crops in India: 8
+ - Max records per year in India: 176
+ - Num. records per crop per year in India: 22
+ - Unique yield values: 23
+ - After streamlining data for Indian records:
+    - total records: 184
+    - total records per year: 8
+ - Using 2012 & 2013 records as evaluation data for the models (as a test of model forecastability)
+    - The data belonging to the remaining years are split into training and test set
+    - R-squared results on training data
+       - Linear Regression: 0.969
+       - Decision Tree    : 1.0
+       - Random Forest    : 0.9923
+       - Gradient Boosting: 0.8634
+    - R-squared results on test data
+       - Linear Regression: 0.9598
+       - Decision Tree    : 0.979
+       - Random Forest    : 0.971
+       - Gradient Boosting: 0.835
+    - R-squared results on 2012 eval data
+       - Linear Regression: 0.8768
+       - Decision Tree    : 0.7748
+       - Random Forest    : 0.8143
+       - Gradient Boosting: 0.6913
+    - R-squared results on 2013 eval data
+       - Linear Regression: 0.9162
+       - Decision Tree    : 0.8727
+       - Random Forest    : 0.8654
+       - Gradient Boosting: 0.7546
+ - Decision Tree recorded best training and test scores
+ - Linear Regression recorded best forecastability score
+ - After hyperparameter tunning for Decision Tree and Random Forest models using GridSearchCV (5-fold cross validation)
+    - R-squared results on training data
+       - Linear Regression: 0.969
+       - Decision Tree    : 0.9786
+       - Random Forest    : 0.9922
+    - R-squared results on test data
+       - Linear Regression: 0.9598
+       - Decision Tree    : 0.9634
+       - Random Forest    : 0.9705
+    - R-squared results on 2012 eval data
+       - Linear Regression: 0.8768
+       - Decision Tree    : 0.8557
+       - Random Forest    : 0.8211
+    - R-squared results on 2013 eval data
+       - Linear Regression: 0.9162
+       - Decision Tree    : 0.8849
+       - Random Forest    : 0.8646
+
+
+
+Consideration:
+ - Given that the project is aimed at developing a localized crop yield prediction system, data focus will be moved to India as a case study.
+ - To resolve the improper data fabrication caused the cross-join with the average temperature data, the following steps is undertaken to streamline the dataset
+    - compute the average of the 22 records of each year as the temperature average for the year.
+    - replace all temperature values for a year with its respective computed average value.
+    - drop duplicated records
+ - From existing literature, best ML performing models/algorithms include: Decision Tree, Random Forest, Gradient Boosting
+ - From existing literature, common evaluation metrics include: R-squared, mean squared error, mean absolute error, root mean squared error
+ - Given that both Decision Tree and Random Forest has tunable parameters, the next step is to perform a hyperparameter tuning for the two models to see if they may/can outperform the Linear Regression model in forecastability.
+
+
+Note:
+ - Number of records per crop per year is too small making the problem nature not suitable for a deep neural network algorithm
+ - Average rainfall data for India is constant in the dataset, hence no correlation is observed with any other field
+ - Question to answer: Does a constant feature (average_rain_fall_mm_per_year) has an effect on the prediction of the target value?
+ - There are 22 records per year in the average temperature datasource. This in a way explains why there are 22 records per crop in the refocused dataset. This behaviour is not consistent with the other data sources which has only one record per year.
+ - The records with outlier average temperature values all belongs to the same and most recent year in the dataset. A perfect representation of changing/worsening environmental conditions (Global warming) with changing years. This set of records will therefore form the evaluation dataset. Hence will not be dealt with as outliers. To test the effect of this, both 2012 and 2013 data will be used for the model evaluation.
+ - Compared to the performance of the Decision Tree and Random Forest algorithms, Linear Regression does not perform well in the training and test phase. However, it recorded the best forecastability score on both the 2012 and 2013 unseen and slightly varying data
