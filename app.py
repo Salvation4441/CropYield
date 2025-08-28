@@ -49,3 +49,4 @@ if submit_button:
         result = model.predict(data_transformed)[0]
         st.success(f'Predicted Yield: {result:,.0f} tonnes')
         st.balloons()
+
